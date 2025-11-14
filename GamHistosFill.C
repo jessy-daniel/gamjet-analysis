@@ -677,7 +677,7 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //MC2024 --> added for running 2024MC
-  if (TString(ds.c_str()).Contains("2024P8")|| ds=="2024QCD" || ds=="2024P8X" || TString(ds.c_str()).Contains("Winter24MG_")) {
+  if (TString(ds.c_str()).Contains("2024P8")|| ds=="2024QCD" || ds=="2024P8X" || TString(ds.c_str()).Contains("Summer24MG_")) {
     #ifdef PNETREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNet", "");
     #elif defined PNETREGNEUTRINO
@@ -692,9 +692,32 @@ void GamHistosFill::Loop()
 
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  if (ds=="2024B-PromptReco-v1") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
     jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
+  }
+  if (ds=="2024B") {
+    #ifdef PNETREG
+    jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #ifdef UPARTREG
+    jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("", "Summer24Prompt24_V1_MC_L2Relative_AK4PFPuppi",
+                CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+    #endif
   }
   if (ds=="2024C") {
     #ifdef PNETREG
@@ -870,7 +893,7 @@ void GamHistosFill::Loop()
   if ((TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix")==false )|| ds=="2023QCD" || TString(ds.c_str()).Contains("2023P8-BPix") || ds=="2023QCD-BPix" ||
   TString(ds.c_str()).Contains("Summer23MG_") ||
   TString(ds.c_str()).Contains("Summer23MGBPix_")) sera = "2023"; //added 2023P8-BPix
-  if (TString(ds.c_str()).Contains("2024P8")|| ds=="2024QCD"|| TString(ds.c_str()).Contains("Winter24MG_")) sera = "2024";
+  if (TString(ds.c_str()).Contains("2024P8")|| ds=="2024QCD"|| TString(ds.c_str()).Contains("Summer24MG_")) sera = "2024";
   //
   if (ds=="2016B"||ds=="2016C"||ds=="2016D"||ds=="2016BCD"||
       ds=="2016E"||ds=="2016F"||ds=="2016EF"||ds=="2016BCDEF") sera = "2016APV";
@@ -908,7 +931,7 @@ void GamHistosFill::Loop()
 //for prompt data 2024B - UPDATE THIS REGULARLY
   if (TString(ds.c_str()).Contains("2024"))
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
-    LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json");
+    LoadJSON("files/Cert_Collisions2024_378981_386693_Golden.json");
 
   //Cert_Collisions2023_370354_370790_Golden.json");
 
@@ -961,7 +984,7 @@ void GamHistosFill::Loop()
 //for now also use jetvetomap 2023D for the new 2024B prompt reco data:
   if (TString(ds.c_str()).Contains("24")) {
     if (TString(ds.c_str()).Contains("2024B-PromptReco-v1") || TString(ds.c_str()).Contains("2024B") || TString(ds.c_str()).Contains("2024C") || TString(ds.c_str()).Contains("2024D") || TString(ds.c_str()).Contains("2024E") || TString(ds.c_str()).Contains("2024F") || TString(ds.c_str()).Contains("2024G") || TString(ds.c_str()).Contains("2024H") || TString(ds.c_str()).Contains("2024I") ||
-  TString(ds.c_str()).Contains("2024P8") ||  (TString(ds.c_str()).Contains("2024QCD")) || TString(ds.c_str()).Contains("Winter24MG"))
+  TString(ds.c_str()).Contains("2024P8") ||  (TString(ds.c_str()).Contains("2024QCD")) || TString(ds.c_str()).Contains("Summer24MG"))
       fjv = new TFile("files/jetveto2023D.root","READ");
     }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
@@ -2426,8 +2449,6 @@ void GamHistosFill::Loop()
        (isRun3 && (is24) &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
-   (HLT_Photon90_R9Id90_HE10_IsoM && pt>=90  && pt<110  && (itrg=90))  ||
-	 (HLT_Photon75_R9Id90_HE10_IsoM && pt>=75  && pt<90   && (itrg=75))  ||
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
 	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
