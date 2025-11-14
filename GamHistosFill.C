@@ -16,12 +16,12 @@ using namespace std;
 
 #include "parsePileUpJSON.C"
 
-// #define PNETREG
-#define PNETREGNEUTRINO
-#define UPARTREGNEUTRINO
+#define PNETREG
+// #define PNETREGNEUTRINO
+// #define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
-bool CLOSURE_L2L3RES = true;
+bool CLOSURE_L2L3RES = false;
 bool RESCALE_MASS= true;
 
 
@@ -585,7 +585,7 @@ void GamHistosFill::Loop()
   }
  */
   //MC2023 --> added for running 2023MC with and without BPix stuff
-  if ((TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix") ==false)|| ds=="2023QCD" || ds=="2023P8X" || TString(ds.c_str()).Contains("Summer23MG_")) { //earlier called: Summer2023
+  if ((TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix") == false) || ds=="2023QCD" || ds=="2023P8X" || TString(ds.c_str()).Contains("Summer23MG_")) { //earlier called: Summer2023
     //jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", ""); //23rd of Feb2024 - investigating how plots look with 2022 corrections
     #ifdef PNETREG
     jec = getFJC("", "Summer23Run3_V3_MC_L2Relative_AK4PFPNet", "");
@@ -705,7 +705,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024B_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024B_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -728,7 +728,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024C_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024C_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024C_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024C_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -751,7 +751,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024D_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024D_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024D_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024D_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -774,7 +774,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024E_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024E_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024E_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024E_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -797,7 +797,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024F_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024F_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024F_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024F_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -820,7 +820,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024G_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024G_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024G_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024G_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -843,7 +843,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024H_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024H_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024H_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024H_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -866,7 +866,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                 CLOSURE_L2L3RES ? "Summer24_Run2024I_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
                 (CLOSURE_L2RES ? "Summer24_Run2024I_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
-    #ifdef UPARTREG
+    #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT",
                 CLOSURE_L2L3RES ? "Summer24_Run2024I_V1_DATA_L2L3Residual_AK4PFUparT" :
                 (CLOSURE_L2RES ? "Summer24_Run2024I_V1_DATA_L2Residual_AK4PFUparT" : ""));
@@ -985,7 +985,7 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("24")) {
     if (TString(ds.c_str()).Contains("2024B-PromptReco-v1") || TString(ds.c_str()).Contains("2024B") || TString(ds.c_str()).Contains("2024C") || TString(ds.c_str()).Contains("2024D") || TString(ds.c_str()).Contains("2024E") || TString(ds.c_str()).Contains("2024F") || TString(ds.c_str()).Contains("2024G") || TString(ds.c_str()).Contains("2024H") || TString(ds.c_str()).Contains("2024I") ||
   TString(ds.c_str()).Contains("2024P8") ||  (TString(ds.c_str()).Contains("2024QCD")) || TString(ds.c_str()).Contains("Summer24MG"))
-      fjv = new TFile("files/jetveto2023D.root","READ");
+      fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ");
     }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);

@@ -16,7 +16,7 @@ IOV_list = (
     + [
         file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")
-        if "Winter24MG_" in file and "all" not in file
+        if "Summer24MG_" in file and "all" not in file
     ]
     + [
         file.replace(".txt", "").replace("mcFiles_", "")
@@ -189,8 +189,8 @@ print("IOVs to run: ", IOV_input, len(IOV_input))
 if not os.path.exists("rootfiles/" + version):
     os.makedirs("rootfiles/" + version)
 
-if not os.path.exists("/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" + version):
-    os.makedirs("/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" + version)
+if not os.path.exists("/afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/" + version):
+    os.makedirs("/afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/" + version)
 
 pnetreg = args.pnetreg
 upartreg = args.upartreg
@@ -362,7 +362,7 @@ for iov in IOV_input:
             + iov
             + '","'
             + version
-            + "\")' > /eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" 
+            + "\")' > /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/" 
             + version
             + "/log_"
             + iov
@@ -380,7 +380,7 @@ for iov in IOV_input:
         )
     else:
         os.system(
-            f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
+            f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
         )
 
-    print(f" => Follow logging with 'tail -f /eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log'")
+    print(f" => Follow logging with 'tail -f /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log'")
