@@ -54,7 +54,7 @@ MC_list_of_lists = [
     [
         file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")
-        if "Winter24MG_" in file and "all" not in file
+        if "Summer24MG_" in file and "all" not in file
     ],
     [
         file.replace(".txt", "").replace("mcFiles_", "")
