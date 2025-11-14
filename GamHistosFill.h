@@ -96,6 +96,8 @@ public :
    Float_t         Jet_rawFactor[nJetMax];
    Float_t         Jet_PNetRegPtRawCorr[nJetMax];   //[nJet]
    Float_t         Jet_PNetRegPtRawCorrNeutrino[nJetMax];   //[nJet]
+   Float_t         Jet_UParTAK4RegPtRawCorr[nJetMax];   //[nJet]
+   Float_t         Jet_UParTAK4RegPtRawCorrNeutrino[nJetMax];   //[nJet]
    Float_t         Jet_area[nJetMax];
    //Int_t           Jet_jetId[nJetMax]; // NanoV10,11
    UChar_t         Jet_jetId[nJetMax];   // NanoV12
@@ -324,7 +326,9 @@ public :
    TBranch        *b_Jet_qgl;   //!
    TBranch        *b_Jet_rawFactor;   //!
    TBranch        *b_Jet_PNetRegPtRawCorr;   //!
-   TBranch        *b_Jet_PNetRegPtRawCorrNeutrino;   //!
+   TBranch        *b_Jet_PNetRegPtRawCorrNeutrino;   //! 
+   TBranch        *b_Jet_UParTAK4RegPtRawCorr;   //!
+   TBranch        *b_Jet_UParTAK4RegPtRawCorrNeutrino;   //!
    TBranch        *b_Jet_jetId;   //!
    TBranch        *b_Jet_nConstituents;   //!
    TBranch        *b_Jet_nElectrons;   //!
@@ -570,23 +574,27 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	  (TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix") ==false) || ds=="2023QCD" || TString(ds.c_str()).Contains("2023P8-BPix") || ds=="2023QCD" || ds=="2023QCD-BPix" ||//added 2023P8_BPix
     TString(ds.c_str()).Contains("Summer23MG_") ||
           TString(dataset.c_str()).Contains("Summer23MGBPix_") );
-  is24 = (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" ||
-          ds=="2024P8" || ds=="2024QCD"); //added these already, even though no MC for 2024 yet
+  is24 = (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024F" || ds=="2024G" || ds=="2024H" || ds=="2024I" ||
+          ds=="2024BX" || ds=="2024CX" || ds=="2024DX" || ds=="2024EX" || ds=="2024FX" || ds=="2024GX" || ds=="2024HX" || ds=="2024IX" |
+          ds=="2024P8" || ds=="2024QCD" || ds=="2024P8X" || ds=="2024QCDX" || TString(ds.c_str()).Contains("2024P8") || TString(ds.c_str()).Contains("Winter24MG")); //added these already, even though no MC for 2024 yet
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	   ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD"  ||
      TString(ds.c_str()).Contains("Summer22MG") || TString(ds.c_str()).Contains("Summer22EEMG") ||
            ds=="2023QCD" || ds=="2023QCD-BPix" ||
            ds=="2024QCD" ||  //added 2024QCD already here
            TString(ds.c_str()).Contains("Summer23MG_") ||
-                TString(dataset.c_str()).Contains("Summer23MGBPix_") );
+           TString(dataset.c_str()).Contains("Summer23MGBPix_") ||
+           TString(ds.c_str()).Contains("Winter24MG"));
   isMG = (ds=="2022P8" || ds=="2022EEP8" || ds=="2022QCD" || ds=="2022EEQCD" ||
           TString(ds.c_str()).Contains("2022P8") || TString(ds.c_str()).Contains("Summer22MG") ||
             TString(ds.c_str()).Contains("2022EEP8") || TString(ds.c_str()).Contains("Summer22EEMG") ||
            (TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix")==false ) || ds=="2023QCD" ||
            TString(ds.c_str()).Contains("2023P8-BPix") || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
            ds=="2024P8"  || //added already here
+           TString(ds.c_str()).Contains("2024P8")
            TString(ds.c_str()).Contains("Summer23MG_") ||
-                TString(dataset.c_str()).Contains("Summer23MGBPix_") );
+           TString(dataset.c_str()).Contains("Summer23MGBPix_") ||
+           TString(ds.c_str()).Contains("Winter24MG"));
   isRun3 = (is22 || is23 || is24);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24);
@@ -700,6 +708,8 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
    fChain->SetBranchAddress("Jet_PNetRegPtRawCorr", Jet_PNetRegPtRawCorr, &b_Jet_PNetRegPtRawCorr);
    fChain->SetBranchAddress("Jet_PNetRegPtRawCorrNeutrino", Jet_PNetRegPtRawCorrNeutrino, &b_Jet_PNetRegPtRawCorrNeutrino);
+   fChain->SetBranchAddress("Jet_UParTAK4RegPtRawCorr", Jet_UParTAK4RegPtRawCorr, &b_Jet_UParTAK4RegPtRawCorr);
+   fChain->SetBranchAddress("Jet_UParTAK4RegPtRawCorrNeutrino", Jet_UParTAK4RegPtRawCorrNeutrino, &b_Jet_UParTAK4RegPtRawCorrNeutrino);
    fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);

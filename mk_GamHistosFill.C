@@ -72,7 +72,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w12") { //using w-
 		  dataset=="2023Cv123X" || dataset=="2023Cv4X" || dataset=="2023DX" || //for my test wX23
 		  dataset=="2023B" || dataset=="2023Cv123" ||
 		  dataset=="2023Cv4" || dataset=="2023D" ||
-                  dataset=="2024B" || dataset=="2024C" ||
+                  dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024E" || dataset=="2024F" || dataset=="2024G" || dataset=="2024H" || dataset=="2024I" ||
                   dataset=="2024B-PromptReco-v1");
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
@@ -83,7 +83,9 @@ void mk_GamHistosFill(string dataset = "X", string version = "w12") { //using w-
      TString(dataset.c_str()).Contains("2022EEP8") ||
                 dataset=="2023P8X" || dataset=="2023P8-BPixX"|| //for my test wX23
 		(TString(dataset.c_str()).Contains("2023P8") && TString(dataset.c_str()).Contains("BPix") ==false) || //);// || dataset=="2023QCD");
-  		TString(dataset.c_str()).Contains("2023P8-BPix") ); //added the BPix MC files
+  		TString(dataset.c_str()).Contains("2023P8-BPix") ||
+      TString(dataset.c_str()).Contains("2024P8")
+    ); //added the BPix MC files
 
   bool addQCD = (dataset=="2016QCD" || dataset=="2016APVQCD" ||
 		 dataset=="2017QCD" || dataset=="2018QCD" ||
@@ -92,7 +94,8 @@ void mk_GamHistosFill(string dataset = "X", string version = "w12") { //using w-
                  dataset=="2023QCDX" || dataset=="2023QCD-BPixX" || //for my test wX23
 		 dataset=="2023QCD" || dataset=="2023QCD-BPix" || //added BPix QCD MC
       TString(dataset.c_str()).Contains("Summer23MG_") ||
-            TString(dataset.c_str()).Contains("Summer23MGBPix_")  );
+      TString(dataset.c_str()).Contains("Summer23MGBPix_") ||
+      dataset=="2024QCD" || TString(dataset.c_str()).Contains("Summer24MG_") );
 
 
   //cout << "Clean old shared objects and link files" << endl << flush;

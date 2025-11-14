@@ -51,6 +51,9 @@ void GamHistosMix() {
 
 
   //w1
+  if (YEAR == "2024" || YEAR == "all"){
+    GamHistosMixEra("2024",version);
+  }
   if (YEAR == "2023" || YEAR == "all"){
     GamHistosMixEra("2023",version); //make this contain MC without BPix issue
     GamHistosMixEra("2023-BPix",version); //MC accounted for BPix issue

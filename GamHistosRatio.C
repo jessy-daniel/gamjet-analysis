@@ -77,7 +77,15 @@ void GamHistosRatio(string ver = version) {
 
   // GamHistosRatios(ver,"2022C");
   // GamHistosRatios(ver,"2022D");
-
+  if (YEAR == "2024" || YEAR == "all"){
+    GamHistosRatios(ver,"2024C");
+    GamHistosRatios(ver,"2024D");
+    GamHistosRatios(ver,"2024E");
+    GamHistosRatios(ver,"2024F");
+    GamHistosRatios(ver,"2024G");
+    GamHistosRatios(ver,"2024H");
+    GamHistosRatios(ver,"2024I");
+  }
   if (YEAR == "2023" || YEAR == "all"){
     GamHistosRatios(ver,"2023Cv123");
     GamHistosRatios(ver,"2023Cv4");

@@ -5,6 +5,25 @@ import time
 
 IOV_list = (
     [
+        "2024C",
+        "2024D",
+        "2024E",
+        "2024F",
+        "2024G",
+        "2024H",
+        "2024I",
+    ]
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Winter24MG_" in file and "all" not in file
+    ]
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "2024P8" in file and "all" not in file
+    ]
+        +[
         "2023Cv123",
         "2023Cv4",
         "2023D",
@@ -64,6 +83,13 @@ IOV_list = (
 # resources for slurm
 res_iovs = {
     # dataset: [memory, hours, days]
+    "2024C": [8, 20, ""],
+    "2024D": [8, 20, ""],
+    "2024E": [8, 20, ""],
+    "2024F": [8, 20, ""],
+    "2024G": [8, 20, ""],
+    "2024H": [8, 20, ""],
+    "2024I": [8, 20, ""],
     "2023Cv123": [3, 2, ""],  # [10, 0, "3-"],
     "2023Cv4": [5, 12, ""],  # [10, 0, "3-"],
     "2023D": [5, 12, ""],  # [10, 0, "3-"],
@@ -88,6 +114,7 @@ res_iovs.update(
     }
 )
 
+run3_24 = [x for x in IOV_list if "24" in x]
 run3_23 = [x for x in IOV_list if "23" in x]
 run3_22 = [x for x in IOV_list if "22" in x]
 
@@ -99,6 +126,7 @@ parser.add_argument("-l", "--local", default=False, action="store_true", help="R
 parser.add_argument("-d", "--debug", default=False, action="store_true", help="Run locally printing the log")
 parser.add_argument("-m", "--max_files", default=9999)
 parser.add_argument("-p", "--pnetreg", default=False, action="store_true")
+parser.add_argument("-u", "--upartreg", default=False, action="store_true")
 parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")
@@ -109,6 +137,8 @@ IOV_input = []
 if args.IOV_list:
     if "all" in args.IOV_list:
         IOV_input = IOV_list
+    elif "24" in args.IOV_list and args.IOV_list[0].isdigit():
+        IOV_input = run3_24
     elif "23" in args.IOV_list and args.IOV_list[0].isdigit():
         IOV_input = run3_23
     elif "22" in args.IOV_list and args.IOV_list[0].isdigit():
@@ -137,7 +167,7 @@ if args.only_failed:
     print("Total IOVs: ", IOV_input)
     IOV_input_failed=[]
     for iov in IOV_input:
-        type_dataset= "mc" if ("Summer" in iov or "P8" in iov) else "data"
+        type_dataset= "mc" if ("Summer" in iov or "Winter" in iov or "P8" in iov) else "data"
         file_name = f"rootfiles/{version}/GamHistosFill_{type_dataset}_{iov}_{version}.root"
         if os.path.exists(file_name):
             size = os.path.getsize(file_name)
@@ -159,12 +189,15 @@ print("IOVs to run: ", IOV_input, len(IOV_input))
 if not os.path.exists("rootfiles/" + version):
     os.makedirs("rootfiles/" + version)
 
-if not os.path.exists("/work/mmalucch/logs_L2L3Res/gam_logs/" + version):
-    os.makedirs("/work/mmalucch/logs_L2L3Res/gam_logs/" + version)
+if not os.path.exists("/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" + version):
+    os.makedirs("/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" + version)
 
 pnetreg = args.pnetreg
+upartreg = args.upartreg
 if "pnetreg" in version:
     pnetreg = True
+if "upartreg" in version:
+    upartreg = True
 
 neutrino = args.neutrino
 if "neutrino" in version:
@@ -176,7 +209,7 @@ if "closure" in version:
 
 
 if not args.fast:
-    # choose if pnetreg or pnetregneutrino
+    # choose if pnetreg/upartreg or pnetregneutrino/upartregneutrino
     with open("GamHistosFill.C", "r") as file:
         filedata = file.read()
 
@@ -190,6 +223,14 @@ if not args.fast:
             filedata = filedata.replace(
                 "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
             )
+        if not "// #define UPARTREG\n" in filedata:
+            print("commenting UPARTREG")
+            filedata = filedata.replace("#define UPARTREG\n", "// #define UPARTREG\n")
+        if not "// #define UPARTREGNEUTRINO\n" in filedata:
+            print("commenting UPARTREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define UPARTREGNEUTRINO\n", "// #define UPARTREGNEUTRINO\n"
+            )
     elif pnetreg and neutrino:
         print("Setting up PNetReg with neutrino")
         if "// #define PNETREGNEUTRINO\n" in filedata:
@@ -200,6 +241,50 @@ if not args.fast:
         if not "// #define PNETREG\n" in filedata:
             print("commenting PNETREG")
             filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+        if not "// #define UPARTREG\n" in filedata:
+            print("commenting UPARTREG")
+            filedata = filedata.replace("#define UPARTREG\n", "// #define UPARTREG\n")
+        if not "// #define UPARTREGNEUTRINO\n" in filedata:
+            print("commenting UPARTREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define UPARTREGNEUTRINO\n", "// #define UPARTREGNEUTRINO\n"
+            )
+    elif upartreg and not neutrino:
+        print("Setting up UparTReg without neutrino")
+        if "// #define UPARTREG\n" in filedata:
+            print("uncommenting UPARTREG")
+            filedata = filedata.replace("// #define UPARTREG\n", "#define UPARTREG\n")
+        if not "// #define UPARTREGNEUTRINO\n" in filedata:
+            print("commenting UPARTREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define UPARTREGNEUTRINO\n", "// #define UPARTREGNEUTRINO\n"
+            )
+        if not "// #define PNETREG\n" in filedata:
+            print("commenting PNETREG")
+            filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+        if not "// #define PNETREGNEUTRINO\n" in filedata:
+            print("commenting PNETREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
+            )
+    elif upartreg and neutrino:
+        print("Setting up UParTReg with neutrino")
+        if "// #define UPARTREGNEUTRINO\n" in filedata:
+            print("uncommenting UPARTREGNEUTRINO")
+            filedata = filedata.replace(
+                "// #define UPARTREGNEUTRINO\n", "#define UPARTREGNEUTRINO\n"
+            )
+        if not "// #define UPARTREG\n" in filedata:
+            print("commenting UPARTREG")
+            filedata = filedata.replace("#define UPARTREG\n", "// #define UPARTREG\n")
+        if not "// #define PNETREG\n" in filedata:
+            print("commenting PNETREG")
+            filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+        if not "// #define PNETREGNEUTRINO\n" in filedata:
+            print("commenting PNETREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
+            )
     else:
         print("Using standard jet pT")
         if not "// #define PNETREG\n" in filedata:
@@ -209,6 +294,14 @@ if not args.fast:
             print("commenting PNETREGNEUTRINO")
             filedata = filedata.replace(
                 "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
+            )
+        if not "// #define UPARTREG\n" in filedata:
+            print("commenting UPARTREG")
+            filedata = filedata.replace("#define UPARTREG\n", "// #define UPARTREG\n")
+        if not "// #define UPARTREGNEUTRINO\n" in filedata:
+            print("commenting UPARTREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define UPARTREGNEUTRINO\n", "// #define UPARTREGNEUTRINO\n"
             )
 
     # find line that starts with bool CLOSURE_L2L3RES
@@ -269,7 +362,7 @@ for iov in IOV_input:
             + iov
             + '","'
             + version
-            + "\")' > /work/mmalucch/logs_L2L3Res/gam_logs/"
+            + "\")' > /eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/" 
             + version
             + "/log_"
             + iov
@@ -287,7 +380,7 @@ for iov in IOV_input:
         )
     else:
         os.system(
-            f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/work/mmalucch/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
+            f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
         )
 
-    print(f" => Follow logging with 'tail -f /work/mmalucch/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log'")
+    print(f" => Follow logging with 'tail -f /eos/user/j/jessy/CMS/UparTReg/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log'")
