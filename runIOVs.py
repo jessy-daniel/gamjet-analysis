@@ -131,6 +131,7 @@ parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")
 parser.add_argument("-of", "--only-failed", default=False, action="store_true")
+parser.add_argument("-sl", "--slurm", default=False, action="store_true", help="Submit jobs via slurm")
 args = parser.parse_args()
 
 IOV_input = []
@@ -352,7 +353,6 @@ if not args.fast:
         file.write(filedata)
     time.sleep(10)
 
-
 for iov in IOV_input:
     print("Process GamHistFill.C+g for IOV " + iov)
 
@@ -379,8 +379,15 @@ for iov in IOV_input:
             + "\")' "
         )
     else:
-        os.system(
-            f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
-        )
+        if args.slurm:
+            os.system(
+                f"sbatch --job-name=gamjet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version}"
+            )
+        else:
+            os.system(
+                f"condor_submit -a 'arguments = {iov} {version}' -a 'output = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.out' -a 'error = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.err' -a 'log = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log' submit_condor.sub"
+            )
 
+    if not args.slurm:
+        print(f" => Follow jobs with 'condor_q'")
     print(f" => Follow logging with 'tail -f /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/{version}/log_{iov}_{version}.log'")

@@ -7,7 +7,7 @@ f = open(sys.argv[1])
 map = json.load(f)
 f.close()
 
-outfile = open("pu_file-new.txt", "w")
+outfile = open(sys.argv[2], "w")
 
 for run, lumis in map.items():
    for lumi in lumis:

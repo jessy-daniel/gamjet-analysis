@@ -25,7 +25,7 @@ bool CLOSURE_L2L3RES = false;
 bool RESCALE_MASS= true;
 
 
-bool _gh_debug = false;
+bool _gh_debug = true;
 bool _gh_debug100 = false;
 
 bool doGamjet = true;
@@ -684,7 +684,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino", "");
     #elif defined UPARTREG
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparT", "");
-    #elif defined PNETREGNEUTRINO
+    #elif defined UPARTREGNEUTRINO
     jec = getFJC("", "Summer24Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino", "");
     #else
     jec = getFJC("", "Summer24Prompt24_V1_MC_L2Relative_AK4PFPuppi", ""); 
@@ -3608,8 +3608,39 @@ void GamHistosFill::LoadPU() {
   trigs["2022"].push_back("HLT_Photon110EB_TightID_TightIso");
   trigs["2022"].push_back("HLT_Photon200");
 
+  //comment out the once for which I haven't produced a pileup histogram yet
+  trigs["summer2024P8"].push_back("mc"); //photon mc
+  trigs["2024MG"].push_back("mc"); //qcd mc (winter)
+  trigs["summer2024MG"].push_back("mc"); //qcd mc (summer)
+
+  //need to fix the following by some simple if condition when setting the eras.... for now like this
+  trigs["summer2024QCDa"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDb"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDc"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDd"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDe"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDf"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDg"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDh"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDi"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDj"].push_back("mc"); //qcd mc (summer
+
+  ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
+  trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
+  //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
+  //trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
+  // trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso");  // --> should actually work for everything (test before removing the following lines)
+  trigs["2024B"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024C"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024E"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024G"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024H"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024I"].push_back("HLT_Photon50EB_TightID_TightIso");
+
   // files/pileup.root updated with tchain.C on Hefaistos
-  TFile *fmc = new TFile("files/pileup.root","READ");
+  TFile *fmc = new TFile("pileup/2024/pu_summary_w41.root","READ");
   assert(fmc && !fmc->IsZombie());
 
   for (int i = 0; i != neras; ++i) {

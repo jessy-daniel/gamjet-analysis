@@ -1,0 +1,17 @@
+universe = vanilla
+executable = submit_condor.sh
+arguments = iov version
+
+transfer_input_files = mk_GamHistosFill.C, GamHistosFill.C, GamHistosFill.h, parsePileUpJSON.C, input_files, files, CondFormats, GamHistosFill_C.so, GamHistosFill_C_ACLiC_dict_rdict.pcm, pileup
+
+output = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/$(VERSION)/log_$(IOV)_$(VERSION).out
+error  = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/$(VERSION)/log_$(IOV)_$(VERSION).err
+log    = /afs/cern.ch/work/j/jessy/private/CMS/PNET_Regression/Residuals/logs_L2L3Res/gam_logs/$(VERSION)/log_$(IOV)_$(VERSION).log
+
+request_memory = 8000MB
+request_disk = 200MB
+request_cpus = 1
+
++JobFlavour = "tomorrow"
+
+queue

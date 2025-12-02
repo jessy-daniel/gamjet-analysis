@@ -161,7 +161,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w12") { //using w-
 		 Form("input_files/dataFiles_Run%s.txt",dataset.c_str()), ios::in);
     string filename;
     cout << "Chaining data files:" << endl << flush;
-    int nFiles(0), nFilesMax(827);//9999);
+    int nFiles(0), nFilesMax(9999);
     while (fin >> filename && nFiles<nFilesMax) {
       ++nFiles;
       c->AddFile(filename.c_str());
@@ -177,7 +177,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w12") { //using w-
 		 Form("input_files/mcFiles_%s.txt",dataset.c_str()), ios::in);
     string filename;
     cout << "Chaining MC files:" << endl << flush;
-    int nFiles(0), nFilesMax(1437);//100);
+    int nFiles(0), nFilesMax(9999);//100);
     while (fin >> filename && nFiles<nFilesMax) {
       ++nFiles;
       c->AddFile(filename.c_str());
