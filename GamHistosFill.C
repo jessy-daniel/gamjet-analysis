@@ -16,9 +16,9 @@ using namespace std;
 
 #include "parsePileUpJSON.C"
 
-#define PNETREG
+// #define PNETREG
 // #define PNETREGNEUTRINO
-// #define UPARTREGNEUTRINO
+#define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
@@ -3550,7 +3550,7 @@ void GamHistosFill::LoadPU() {
   cout << endl << "GamHistosFill::LoadPU" << endl << flush;
   TDirectory *curdir = gDirectory;
 
-  string eras[] = {"2024P8", "Summer24MG","2024C","2024D","2024E","2024F","2024G","2024H","2024I"}
+  string eras[] = {"2024P8", "Summer24MG","2024C","2024D","2024E","2024F","2024G","2024H","2024I"};
   //string eras[] =
   //  {"2016P8",/*"2016APVP8",*/"2016P8APV","2017P8", "2018P8",
   //   "2016QCD",/*"2016APVQCD",*/"2016QCDAPV","2017QCD", "2018QCD",
@@ -3610,29 +3610,31 @@ void GamHistosFill::LoadPU() {
   trigs["2022"].push_back("HLT_Photon200");
 
   //comment out the once for which I haven't produced a pileup histogram yet
-  trigs["2024P8"].push_back("mc"); //photon mc
-  trigs["Summer24MG"].push_back("mc"); //qcd mc (summer)
+  trigs["2024P8"].push_back("GamJet"); //photon mc
+  trigs["Summer24MG"].push_back("QCD"); //qcd mc (summer)
 
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
   //trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
   // trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso");  // --> should actually work for everything (test before removing the following lines)
-  trigs["2024B"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024C"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024E"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024G"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024H"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024I"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024B"].push_back("2024B_Photon50EB_TightID_TightIso");
+  trigs["2024C"].push_back("2024C_Photon50EB_TightID_TightIso");
+  trigs["2024D"].push_back("2024D_Photon50EB_TightID_TightIso");
+  trigs["2024E"].push_back("2024E_Photon50EB_TightID_TightIso");
+  trigs["2024F"].push_back("2024F_Photon50EB_TightID_TightIso");
+  trigs["2024G"].push_back("2024G_Photon50EB_TightID_TightIso");
+  trigs["2024H"].push_back("2024H_Photon50EB_TightID_TightIso");
+  trigs["2024I"].push_back("2024I_Photon50EB_TightID_TightIso");
 
   // files/pileup.root updated with tchain.C on Hefaistos
-  TFile *fmc = new TFile("pileup/2024/pu_summary_w41.root","READ");
+  TFile *fmc = new TFile("files/pileup.root","READ");
+
   assert(fmc && !fmc->IsZombie());
 
   for (int i = 0; i != neras; ++i) {
     string se = eras[i]; const char *ce = se.c_str();
+    bool is2024 = (se.find("24") != string::npos);
     for (unsigned int j = 0; j != trigs[se].size(); ++j) {
       string st = trigs[se][j]; const char *ct = st.c_str();
 
@@ -3642,18 +3644,29 @@ void GamHistosFill::LoadPU() {
       else sscanf(ct,"HLT_Photon%d*",&itrg);
 
       TFile *fdt(0);
+      TFile *f2024(0);
       TH1D *h(0);
-      if (st=="mc") {
-	h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
-	if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
-	assert(h);
-      }
+
+      if (is2024) { // Different file structure for 2024 pu histograms
+          TFile *f2024 = new TFile("pileup/2024/pileup_summary_2024_MC-and-Data.root","READ"); // file for MC + Data pu for 2024
+          assert(f2024 && !f2024->IsZombie());
+          h = (TH1D*)f2024->Get(Form("pileup_%s",ct));
+          if (!h) cout << "Failed to find pileup_"<<ct<<endl<<flush;
+          assert(h);
+      }   
       else {
-	// data files from Laura (on CERNbox)
-	fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
-	assert(fdt && !fdt->IsZombie());
-	h = (TH1D*)fdt->Get("pileup");
-	assert(h);
+        if (st=="mc") {
+          h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
+          if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
+          assert(h);
+        }
+        else {
+	        // data files from Laura (on CERNbox)
+	        fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
+	        assert(fdt && !fdt->IsZombie());
+	        h = (TH1D*)fdt->Get("pileup");
+	        assert(h);
+        }
       }
       assert(h);
 
@@ -3668,6 +3681,7 @@ void GamHistosFill::LoadPU() {
 		   lumi,st=="mc" ? "events" : "fb-1");
 
       if (fdt) fdt->Close();
+      if (f2024) f2024->Close();
     } // for j in trigs
   } // for i in eras
   fmc->Close();
