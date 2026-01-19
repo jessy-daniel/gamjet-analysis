@@ -3550,11 +3550,12 @@ void GamHistosFill::LoadPU() {
   cout << endl << "GamHistosFill::LoadPU" << endl << flush;
   TDirectory *curdir = gDirectory;
 
-  string eras[] =
-    {"2016P8",/*"2016APVP8",*/"2016P8APV","2017P8", "2018P8",
-     "2016QCD",/*"2016APVQCD",*/"2016QCDAPV","2017QCD", "2018QCD",
-     "2016APV","2016FGH","2017","2018",
-     "2022P8", "2022EEP8","2022QCD", "2022EEQCD"};
+  string eras[] = {"2024P8", "Summer24MG","2024C","2024D","2024E","2024F","2024G","2024H","2024I"}
+  //string eras[] =
+  //  {"2016P8",/*"2016APVP8",*/"2016P8APV","2017P8", "2018P8",
+  //   "2016QCD",/*"2016APVQCD",*/"2016QCDAPV","2017QCD", "2018QCD",
+  //   "2016APV","2016FGH","2017","2018",
+  //   "2022P8", "2022EEP8","2022QCD", "2022EEQCD"};
   //"2016BCD","2016EF","2016FGH",
   //"2017B","2017C","2017D","2017E","2017F",
   //"2018A","2018B","2018C","2018D"};
@@ -3609,21 +3610,8 @@ void GamHistosFill::LoadPU() {
   trigs["2022"].push_back("HLT_Photon200");
 
   //comment out the once for which I haven't produced a pileup histogram yet
-  trigs["summer2024P8"].push_back("mc"); //photon mc
-  trigs["2024MG"].push_back("mc"); //qcd mc (winter)
-  trigs["summer2024MG"].push_back("mc"); //qcd mc (summer)
-
-  //need to fix the following by some simple if condition when setting the eras.... for now like this
-  trigs["summer2024QCDa"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDb"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDc"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDd"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDe"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDf"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDg"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDh"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDi"].push_back("mc"); //qcd mc (summer)
-  trigs["summer2024QCDj"].push_back("mc"); //qcd mc (summer
+  trigs["2024P8"].push_back("mc"); //photon mc
+  trigs["Summer24MG"].push_back("mc"); //qcd mc (summer)
 
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
