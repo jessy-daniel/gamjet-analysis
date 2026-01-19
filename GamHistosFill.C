@@ -10,6 +10,8 @@
 #include "TLorentzVector.h"
 #include "TStopwatch.h"
 
+#include <TSystem.h> // Nécessaire pour gSystem
+
 #include <iostream>
 using namespace std;
 //using namespace GamHistosFill;
@@ -1047,8 +1049,10 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/%s/GamHistosFill_%s_%s_%s.root",
-             version.c_str(),
+  TString dirPathOut = Form("rootfiles/%s", version.c_str());
+  gSystem->mkdir(dirPathOut, true);
+  TFile *fout = new TFile(Form("%s/GamHistosFill_%s_%s_%s.root",
+             dirPathOut.Data(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), version.c_str()),
 			  "RECREATE");
