@@ -7,7 +7,7 @@ parser.add_argument("-f", "--force", default=False, action="store_true")
 parser.add_argument("-i", '--IOV_list', default="all")
 args = parser.parse_args()
 
-os.system(f"python addAllIOVs.py -v {args.version} {'-f' if args.force else ''}  -i {args.IOV_list}")
+os.system(f"python3 addAllIOVs.py -v {args.version} {'-f' if args.force else ''}  -i {args.IOV_list}")
 
 
 for file_name in ["GamHistosMix", "GamHistosRatio"]:

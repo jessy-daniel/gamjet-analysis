@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 import os
 import argparse
 
@@ -29,7 +29,7 @@ IOV_list_of_lists = [
     #
     #   ['2022CD','2022C','2022D'],
     #   ['2022FG','2022F','2022G'],
-       ['2024Only','2024C','2024D','2024E','2024F','2024G','2024H','2024I'],
+       ['2024CDEFGHI','2024C','2024D','2024E','2024F','2024G','2024H','2024I'],
 ]
 MC_list_of_lists = [
     #    ['Run2P8','2016P8','2016APVP8','2017P8','2018P8'],
@@ -61,6 +61,7 @@ MC_list_of_lists = [
         for file in os.listdir("input_files/")
         if "2024P8" in file and "all" not in file
     ],
+    
     [
         file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")

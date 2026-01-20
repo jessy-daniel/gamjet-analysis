@@ -12,12 +12,13 @@
 #include "TGraphErrors.h"
 #include "TProfile2D.h"
 #include "TH2D.h"
+#include <cmath>
 
 #include <iostream>
 using namespace std;
 
-string version = "rescaleMass_removeCorrectEvents_removeNAN_pnetreg_mctruth15_NewRunCrabSkim_closure";
-string YEAR = "2022";
+string version = "pnetreg_v1";
+string YEAR = "24";
 
 
 // Patches to input raw gamma+jet
@@ -77,8 +78,8 @@ void GamHistosRatio(string ver = version) {
 
   // GamHistosRatios(ver,"2022C");
   // GamHistosRatios(ver,"2022D");
-  if (YEAR == "2024" || YEAR == "all"){
-    GamHistosRatios(ver,"2024B");
+  if (YEAR == "2024" || YEAR == "24" || YEAR == "all"){
+    //GamHistosRatios(ver,"2024B");
     GamHistosRatios(ver,"2024C");
     GamHistosRatios(ver,"2024D");
     GamHistosRatios(ver,"2024E");
@@ -86,6 +87,7 @@ void GamHistosRatio(string ver = version) {
     GamHistosRatios(ver,"2024G");
     GamHistosRatios(ver,"2024H");
     GamHistosRatios(ver,"2024I");
+    GamHistosRatios(ver,"2024CDEFGHI");
   }
   if (YEAR == "2023" || YEAR == "all"){
     GamHistosRatios(ver,"2023Cv123");
@@ -235,13 +237,13 @@ void GamHistosRatios(string ver, string iov) {
       //if (iov=="2023D") { //BPix issue (GamHistosMix_mc_2023-BPixP8QCD_w4.root) //should adjust the naming in the other programs!
       if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024Ev1" || iov=="2024Ev2" || iov=="2024E" || iov=="2024F" || iov=="2024G" || iov=="2024H" || iov=="2024I" ||
 						iov=="2024CD" || iov=="2024EF" || iov=="2024EFG" || iov=="2024FG" || iov=="2024F-ECALCC-HCALDI-skim" ||
-						iov=="2024CDE" || iov=="2024CDEF" || iov=="2024CDEFG" ||
+						iov=="2024CDE" || iov=="2024CDEF" || iov=="2024CDEFG" || iov=="2024CDEFGHI" |
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" || iov=="2024BCDEFG" ||
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
 						iov=="2024B-ECALRATIO" || iov=="2024C-ECALRATIO" || iov=="2024C-ECALR-HCALDI" || iov=="2024C-ECALCC-HCALDI") {
         fd = new TFile(Form("rootfiles/%s/GamHistosFill_data_%s_%s.root",cv,ci,cv),"READ");
         fm = new TFile(Form("rootfiles/%s/GamHistosMix_mc_2024P8QCD_%s.root",cv,cv),"READ");
-        // fr = new TFile(Form("rootfiles/%s/GamHistosRatio_%s_P8BPixQCD_%s.root",cv,ci,cv),"RECREATE"); //changed name!!
+        fr = new TFile(Form("rootfiles/%s/GamHistosRatio_%s_P8QCD_%s.root",cv,ci,cv),"RECREATE"); 
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
       }

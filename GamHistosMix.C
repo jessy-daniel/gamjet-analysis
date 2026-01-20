@@ -16,8 +16,8 @@
 
 bool _debug = false;
 
-string version = "rescaleMass_removeCorrectEvents_removeNAN_pnetreg_mctruth15_NewRunCrabSkim_closure";
-string YEAR = "2022";
+string version = "pnetreg_v1";
+string YEAR = "24";
 
 // Scale EM jets (pi0->gamma+gamma) relative to prompt photons
 // Possible causes: EM shower containment, pi>gamma+gamma is a bit wider
@@ -51,7 +51,7 @@ void GamHistosMix() {
 
 
   //w1
-  if (YEAR == "2024" || YEAR == "all"){
+  if (YEAR == "2024" || YEAR == "24" || YEAR == "all"){
     GamHistosMixEra("2024",version);
   }
   if (YEAR == "2023" || YEAR == "all"){
