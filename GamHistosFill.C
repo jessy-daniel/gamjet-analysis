@@ -933,7 +933,7 @@ void GamHistosFill::Loop()
 //for prompt data 2024B - UPDATE THIS REGULARLY
   if (TString(ds.c_str()).Contains("2024"))
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
-    LoadJSON("files/Cert_Collisions2024_378981_386693_Golden.json");
+    LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json");
 
   //Cert_Collisions2023_370354_370790_Golden.json");
 
