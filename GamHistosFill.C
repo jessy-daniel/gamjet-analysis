@@ -20,7 +20,8 @@ using namespace std;
 
 // #define PNETREG
 // #define PNETREGNEUTRINO
-#define UPARTREGNEUTRINO
+#define UPARTREG
+// #define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
