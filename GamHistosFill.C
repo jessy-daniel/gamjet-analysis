@@ -20,8 +20,8 @@ using namespace std;
 
 // #define PNETREG
 // #define PNETREGNEUTRINO
-#define UPARTREG
-// #define UPARTREGNEUTRINO
+// #define UPARTREG
+#define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
@@ -2221,7 +2221,7 @@ void GamHistosFill::Loop()
       double Jet_UParTAK4RegPtRawCorrTotal = 1.;
       #endif
 
-      if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[idx])>4.69) && !(Jet_pt[idx] * (1.0 - Jet_rawFactor[idx])<15.1)){ // No UparT regression above eta=2.5
+      if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[idx])>2.5) && !(Jet_pt[idx] * (1.0 - Jet_rawFactor[idx])<15.1)){ // No UparT regression above eta=2.5
         Jet_UParTAK4RegPtRawCorrTotal = 1.;
       }
       else if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6)){
@@ -2328,7 +2328,7 @@ void GamHistosFill::Loop()
   double Jet_UParTAK4RegPtRawCorrTotal = 1.;
   #endif
 
-  if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[iFox])>4.69) && !(Jet_pt[iFox] * (1.0 - Jet_rawFactor[iFox])<15.1)){ // No UparT regression above eta=2.5
+  if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[iFox])>2.5) && !(Jet_pt[iFox] * (1.0 - Jet_rawFactor[iFox])<15.1)){ // No UparT regression above eta=2.5
     Jet_UParTAK4RegPtRawCorrTotal = 1.;
   }
   else if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6)){
@@ -2581,7 +2581,7 @@ void GamHistosFill::Loop()
   double Jet_UParTAK4RegPtRawCorrTotal = 1.;
   #endif
 
-  if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[i])>4.69) && !(Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.1)){
+  if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[i])>2.5) && !(Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.1)){
     Jet_UParTAK4RegPtRawCorrTotal = 1.;
   }
   else if ((Jet_UParTAK4RegPtRawCorrTotal<1e-6)){
